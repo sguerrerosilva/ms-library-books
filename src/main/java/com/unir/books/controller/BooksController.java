@@ -1,5 +1,6 @@
 package com.unir.books.controller;
 
+import com.unir.books.model.ResponseDeleteDto;
 import com.unir.books.model.pojo.Book;
 import com.unir.books.model.request.CreateBookRequest;
 import com.unir.books.service.BooksServiceImpl;
@@ -140,6 +141,10 @@ public class BooksController {
             responseCode = "400",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = Void.class)),
             description = "Producto inválido o datos incorrectos introducidos.")
+    @ApiResponse(
+            responseCode = "500",
+            content = @Content(mediaType = "application/json", schema = @Schema(implementation = Void.class)),
+            description = "Error interno del servidor interno.")
     public ResponseEntity<Book> patchBook(@PathVariable Long idBook, @RequestBody String patchBody){
         log.info("init patch");
         Book bookPatched = service.updateBook(idBook,patchBody);
@@ -160,15 +165,19 @@ public class BooksController {
             responseCode = "200",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = Void.class)))
     @ApiResponse(
-            responseCode = "404",
+            responseCode = "400",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = Void.class)),
-            description = "No se ha encontrado el producto con el identificador indicado.")
-    public ResponseEntity<Void> deleteBook(@PathVariable Long idBook) {
+            description = "Peticion erronea, id no encontrado")
+    @ApiResponse(
+            responseCode = "500",
+            content = @Content(mediaType = "application/json", schema = @Schema(implementation = Void.class)),
+            description = "Error interno del servidor interno.")
+    public ResponseEntity<ResponseDeleteDto> deleteBook(@PathVariable Long idBook) {
         Boolean removed = service.removeBook(idBook);
         if (Boolean.TRUE.equals(removed)) {
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok(new ResponseDeleteDto("Registro eliminado correctamente"));
         } else {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.badRequest().body(new ResponseDeleteDto("Peticion erronea, id no encontrado"));
         }
     } 
 
