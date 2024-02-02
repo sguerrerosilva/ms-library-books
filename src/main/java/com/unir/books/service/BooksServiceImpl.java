@@ -1,13 +1,13 @@
-package com.unir.products.service;
+package com.unir.books.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.fge.jsonpatch.JsonPatchException;
 import com.github.fge.jsonpatch.mergepatch.JsonMergePatch;
-import com.unir.products.data.BookRepository;
-import com.unir.products.model.pojo.Book;
-import com.unir.products.model.request.CreateBookRequest;
+import com.unir.books.data.BookRepository;
+import com.unir.books.model.pojo.Book;
+import com.unir.books.model.request.CreateBookRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;

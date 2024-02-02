@@ -1,4 +1,4 @@
-package com.unir.products.data.utils;
+package com.unir.books.data.utils;
 
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;

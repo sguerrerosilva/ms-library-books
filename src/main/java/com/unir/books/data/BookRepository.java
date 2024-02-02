@@ -1,12 +1,12 @@
-package com.unir.products.data;
+package com.unir.books.data;
 
-import com.unir.products.data.utils.SearchCriteria;
-import com.unir.products.data.utils.SearchOperation;
-import com.unir.products.data.utils.SearchStatement;
+import com.unir.books.data.utils.SearchCriteria;
+import com.unir.books.data.utils.SearchOperation;
+import com.unir.books.data.utils.SearchStatement;
+import com.unir.books.model.pojo.Book;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Repository;
-import com.unir.products.model.pojo.Book;
 import java.util.List;
 
 @Repository

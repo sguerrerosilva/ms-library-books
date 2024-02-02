@@ -1,4 +1,4 @@
-package com.unir.products.config;
+package com.unir.books.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Builder;

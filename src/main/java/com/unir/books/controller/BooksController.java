@@ -1,8 +1,8 @@
-package com.unir.products.controller;
+package com.unir.books.controller;
 
-import com.unir.products.model.pojo.Book;
-import com.unir.products.model.request.CreateBookRequest;
-import com.unir.products.service.BooksServiceImpl;
+import com.unir.books.model.pojo.Book;
+import com.unir.books.model.request.CreateBookRequest;
+import com.unir.books.service.BooksServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;

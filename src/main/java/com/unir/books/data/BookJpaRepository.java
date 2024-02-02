@@ -1,6 +1,6 @@
-package com.unir.products.data;
+package com.unir.books.data;
 
-import com.unir.products.model.pojo.Book;
+import com.unir.books.model.pojo.Book;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 

@@ -1,4 +1,4 @@
-package com.unir.products.model.pojo;
+package com.unir.books.model.pojo;
 
 import jakarta.persistence.*;
 import lombok.*;
