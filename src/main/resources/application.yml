@@ -11,13 +11,13 @@ eureka:
     service-url:
       defaultZone: ${EUREKA_URL:http://localhost:8761/eureka}
   instance:
-    preferIpAddress: true
-    hostname: ms-library
+    preferIpAddress: false
+    hostname: ms-library-books
 
 ## Configuracion de Spring
 spring:
   application:
-    name: ms-library
+    name: ms-library-books
 
 ## Configuracion secundaria (custom)
 getBook:
