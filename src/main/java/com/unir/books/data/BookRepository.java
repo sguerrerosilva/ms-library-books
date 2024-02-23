@@ -1,60 +1,19 @@
 package com.unir.books.data;
 
-import com.unir.books.data.utils.SearchCriteria;
-import com.unir.books.data.utils.SearchOperation;
-import com.unir.books.data.utils.SearchStatement;
-import com.unir.books.model.pojo.Book;
-import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Repository;
+import com.unir.books.model.db.Book;
+import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 import java.util.List;
+import java.util.Optional;
 
-@Repository
-@RequiredArgsConstructor
-public class BookRepository {
+interface BookRepository extends ElasticsearchRepository<Book, String> {
 
-    private final BookJpaRepository repository;
 
-    public List<Book> getBooks(){
-        return repository.findAll();
-    }
+    Optional<Book> findById(String id);
 
-    public Book getBook(Long idBook){
-        return repository.findById(idBook).orElse(null);
-    }
+    Book save(Book product);
 
-    public Book saveBook(Book book ){
-        return repository.save(book);
-    }
+    void delete(Book product);
 
-    public void deleteBook(Long idBook){repository.deleteById(idBook);}
+    List<Book> findAll();
 
-    public List<Book> search(String author, String title, String isbn, Short age, String synapsis, Short stock) {
-        SearchCriteria<Book> spec = new SearchCriteria<>();
-        if (StringUtils.isNotBlank(author)) {
-            spec.add(new SearchStatement("author", author, SearchOperation.MATCH));
-        }
-
-        if (StringUtils.isNotBlank(title)) {
-            spec.add(new SearchStatement("title", title, SearchOperation.MATCH));
-        }
-
-        if (StringUtils.isNotBlank(isbn)) {
-            spec.add(new SearchStatement("isbn", isbn, SearchOperation.EQUAL));
-        }
-
-        if (age != null) {
-            spec.add(new SearchStatement("age", age, SearchOperation.EQUAL));
-        }
-
-        if (StringUtils.isNotBlank(synapsis)) {
-            spec.add(new SearchStatement("synapsis", synapsis, SearchOperation.MATCH));
-        }
-
-        if (stock != null) {
-            spec.add(new SearchStatement("stock", stock, SearchOperation.EQUAL));
-        }
-
-        return repository.findAll(spec);
-    }
 }

@@ -1,24 +1,22 @@
 package com.unir.books.controller;
 
 import com.unir.books.model.ResponseDeleteDto;
-import com.unir.books.model.pojo.Book;
+import com.unir.books.model.db.Book;
 import com.unir.books.model.request.CreateBookRequest;
+import com.unir.books.model.response.BooksQueryResponse;
 import com.unir.books.service.BooksServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import java.util.Collections;
-import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 @RestController
 @RequiredArgsConstructor
@@ -45,24 +43,18 @@ public class BooksController {
             responseCode = "500",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = Void.class)),
             description = "Error interno del servidor interno.")
-    public ResponseEntity<List<Book>> getProducts(
+    public ResponseEntity<BooksQueryResponse> getProducts(
             @RequestHeader Map<String, String> headers,
-            @Parameter(name = "author", description = "Nombre del autor del libro. No tiene por que ser exacto", example = "Gabriel", required = false)
-            @RequestParam(required = false) String author,
-            @Parameter(name = "title", description = "Nombre del libro. No tiene por que ser exacto", example = "Cien años de soledad", required = false)
-            @RequestParam(required = false) String title,
-            @Parameter(name = "isbn", description = "Código isbn del del libro. Debe ser exacto", example = "ISBN 0-7645-2641-3", required = false)
-            @RequestParam(required = false) String isbn,
-            @Parameter(name = "age", description = "Año de publicación del libro. Debe ser exacto", example = "2023", required = false)
-            @RequestParam(required = false) Short age,
-            @Parameter(name = "synapsis", description = "Sinopsis del libro. No tiene que ser exacto, por ejemplo una palabra clave", example = "Soledad", required = false)
-            @RequestParam(required = false) String synapsis,
-            @Parameter(name = "stock", description = "Stock del libro. Debe ser exacto", example = "5", required = false)
-            @RequestParam(required = false) Short stock) {
+            @Parameter(name = "param", description = "Parametro de busqueda", example = "Novela", required = false)
+            @RequestParam(required = false) String param,
+            @Parameter(name = "gender", description = "Genero del libro", example = "Novela", required = false)
+            @RequestParam(required = false) String gender,
+            @Parameter(name = "aggregate", description = "Variable en true en caso de tener un agregado en la busqueda")
+            @RequestParam(required = false, defaultValue = "false") Boolean aggregate) {
 
         log.info("Headers: {}", headers);
-        List<Book> books = service.getBooks(author,title,isbn,age,synapsis,stock);
-        return ResponseEntity.ok(Objects.requireNonNullElse(books, Collections.emptyList()));
+        BooksQueryResponse books = service.getBooks(param,gender, aggregate);
+        return ResponseEntity.ok(books);
     }
 
     @GetMapping("/books/{idBook}")
@@ -82,7 +74,7 @@ public class BooksController {
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = Void.class)),
             description = "Error interno del servidor interno.")
     public ResponseEntity<Book> getProduct(
-            @RequestHeader Map<String, String> headers, @PathVariable Long idBook) {
+            @RequestHeader Map<String, String> headers, @PathVariable String idBook) {
 
         log.info("Headers: {}", headers);
         log.info("Request received for book: {}", idBook);
@@ -145,7 +137,7 @@ public class BooksController {
             responseCode = "500",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = Void.class)),
             description = "Error interno del servidor interno.")
-    public ResponseEntity<Book> patchBook(@PathVariable Long idBook, @RequestBody String patchBody){
+    public ResponseEntity<Book> patchBook(@PathVariable String idBook, @RequestBody String patchBody){
         log.info("init patch");
         Book bookPatched = service.updateBook(idBook,patchBody);
         if (bookPatched != null){
@@ -172,7 +164,7 @@ public class BooksController {
             responseCode = "500",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = Void.class)),
             description = "Error interno del servidor interno.")
-    public ResponseEntity<ResponseDeleteDto> deleteBook(@PathVariable Long idBook) {
+    public ResponseEntity<ResponseDeleteDto> deleteBook(@PathVariable String idBook) {
         Boolean removed = service.removeBook(idBook);
         if (Boolean.TRUE.equals(removed)) {
             return ResponseEntity.ok(new ResponseDeleteDto("Registro eliminado correctamente"));

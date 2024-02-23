@@ -15,7 +15,7 @@ public class CreateBookRequest {
     private String author;
     private String title;
     private String isbn;
-    private Short age;
+    private String age;
     private String synapsis;
     private Short stock;
 

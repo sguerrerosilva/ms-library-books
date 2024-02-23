@@ -1,0 +1,30 @@
+{
+	"properties": {
+		"Title": {
+			"type": "search_as_you_type",
+			"doc_values": false,
+			"max_shingle_size": 3
+		},
+		"Age": {
+			"type": "keyword"
+		},
+		"Author": {
+			"type": "keyword"
+		},
+		"Gender": {
+			"type": "keyword"
+		},
+		"Image": {
+			"type": "text"
+		},
+		"Isbn": {
+			"type": "keyword"
+		},
+		"Stock": {
+			"type": "short"
+		},
+		"Synapsis": {
+			"type": "text"
+		}
+	}
+}

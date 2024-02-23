@@ -1,6 +1,7 @@
 ## Configuracion de Instancia
 server:
   port: 8082
+  fullAddress: ${HOST:http://localhost}:${PORT:${server.port}}
   error:
     include-stacktrace: on_param
 
@@ -17,21 +18,18 @@ eureka:
 spring:
   application:
     name: ms-library
-  datasource:
-    url: jdbc:h2:mem:testdb;Mode=MySQL
-  jpa:
-    show-sql: true
-    hibernate:
-      ddl-auto: create-drop
-    defer-datasource-initialization: true
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
-      settings:
-        web-allow-others: true
 
 ## Configuracion secundaria (custom)
 getBook:
   url: http://ms-library-inventory-books/products/%s
+
+##Elasticsearch config
+elasticsearch:
+  host: ${ELASTICSEARCH_HOST}
+  credentials:
+    user: ${ELASTICSEARCH_USER}
+    password: ${ELASTICSEARCH_PWD}
+logging:
+  level:
+    tracer: TRACE
 

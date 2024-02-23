@@ -5,9 +5,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.fge.jsonpatch.JsonPatchException;
 import com.github.fge.jsonpatch.mergepatch.JsonMergePatch;
-import com.unir.books.data.BookRepository;
-import com.unir.books.model.pojo.Book;
+import com.unir.books.data.DataAccessRepository;
+import com.unir.books.model.db.Book;
 import com.unir.books.model.request.CreateBookRequest;
+import com.unir.books.model.response.BooksQueryResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,23 +20,17 @@ import java.util.List;
 public class BooksServiceImpl {
 
     @Autowired
-    private BookRepository repository;
+    private DataAccessRepository repository;
 
     @Autowired
     private ObjectMapper objectMapper;
 
-    public List<Book> getBooks(String author, String title, String isbn, Short age, String synapsis, Short stock){
-
-        if(StringUtils.hasLength(author) || StringUtils.hasLength(title) || StringUtils.hasLength(isbn)
-                || age != null || StringUtils.hasLength(synapsis) || stock != null ){
-            return repository.search(author,title,isbn,age,synapsis,stock);
-        }
-        List<Book> books = repository.getBooks();
-        return books.isEmpty() ? null : books;
+    public BooksQueryResponse getBooks(String param,String gender, Boolean aggregate){
+        return repository.findBooks(param, gender ,aggregate);
     }
 
-    public Book getBook(Long idBook){
-        return repository.getBook(idBook);
+    public Book getBook(String idBook){
+        return repository.getBook(idBook).orElse(null);
     }
 
     public Book createBook(CreateBookRequest bookRequest){
@@ -46,8 +41,8 @@ public class BooksServiceImpl {
         return repository.saveBook(book);
     }
 
-    public Book updateBook(Long idBook, String request){
-        Book book = repository.getBook(idBook);
+    public Book updateBook(String idBook, String request){
+        Book book = repository.getBook(idBook).orElse(null);
         if (book != null){
             try{
                 JsonMergePatch jsonMergePatch = JsonMergePatch.fromJson(objectMapper.readTree(request));
@@ -63,10 +58,10 @@ public class BooksServiceImpl {
         }
     }
 
-    public boolean removeBook(Long idBook){
-        Book book = repository.getBook(idBook);
+    public boolean removeBook(String idBook){
+        Book book = repository.getBook(idBook).orElse(null);
         if(book != null){
-            repository.deleteBook(idBook);
+            repository.deleteBook(book);
             return Boolean.TRUE;
         }else{
             return Boolean.FALSE;
